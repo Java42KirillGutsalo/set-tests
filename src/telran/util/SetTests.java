@@ -69,7 +69,7 @@ Set<Integer> set;
 	void treeSetInsensitiveOrderTest () {
 		 String strings[] = {"Boris", "Asaf", "android", "band"};
 		 String expected[] = {"android", "Asaf", "band", "Boris"};
-		 TreeSet<String> treeSet = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+		 TreeSet<String> treeSet = new TreeSet<>((s1, s2) -> (s1.compareToIgnoreCase(s2)));
 		 fillSetFromArray(treeSet, strings);
 		 assertArrayEquals(expected, getArrayFromSet(treeSet));
 	}
