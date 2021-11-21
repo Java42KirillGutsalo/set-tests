@@ -137,4 +137,29 @@ Set<Integer> set;
 		}
 		return res;
 	}
+	@Test
+	void removeAllSameTest() {
+		assertTrue(set.removeAll(set));
+		assertArrayEquals(new Integer[0], getArrayFromSet(set));
+	}
+	@Test
+	void clearTest() {
+		set.clear();
+		assertArrayEquals(new Integer[0], getArrayFromSet(set));
+	}
+	@Test
+	void retainAllTest() {
+		Set<Integer> other = new TreeSet<>();
+		other.add(10);
+		other.add(20);
+		Integer expected[] = {10, 20};
+		set.retainAll(other);
+		assertArrayEquals(expected, getArrayFromSet(set));
+	}
+	@Test
+	void retainAllSameTest() {
+		Arrays.sort(initialNumbers);
+		set.retainAll(set);
+		assertArrayEquals(initialNumbers, getArrayFromSet(set));
+	}
 }
