@@ -10,9 +10,10 @@ import org.junit.jupiter.api.Test;
 class SetTests {
 private static final int N_RANDOM_NUMBERS = 10000;
 Integer[] initialNumbers = {
-	10, 20, 40, 60	
+	10, 20, 40, 60, 5, 25, 3, 4, 2, 1	
 };
 Set<Integer> set;
+
 	@BeforeEach
 	void setUp() throws Exception {
 		set = new TreeSet<>();
@@ -21,16 +22,68 @@ Set<Integer> set;
 
 	private  void fillSet() {
 		fillSetFromArray(set, initialNumbers);
-		
-		
+	}
+	
+	@Test
+	void removeRoot() {
+		Integer expected[] = {
+				1, 2, 3, 4, 5, 20, 25, 40, 60
+		};
+		set.remove(10);
+		assertArrayEquals(expected, getArrayFromSet(set));
+	}
+	
+	@Test
+	void removeJunction() {
+		Integer expected[] = {
+				1, 2, 4, 5, 10, 20, 25, 40, 60
+		};
+		set.remove(3);
+		assertArrayEquals(expected, getArrayFromSet(set));
+	}
+	
+	@Test
+	void removeLeaf() {
+		Integer expected[] = {
+				2, 3, 4, 5, 10, 20, 25, 40, 60
+		};
+		set.remove(1);
+		assertArrayEquals(expected, getArrayFromSet(set));
+	}
+	
+	@Test
+	void removeNonJunctionRight() {
+		Integer expected[] = {
+				1, 2, 3, 4, 5, 10, 25, 40, 60
+		};
+		set.remove(20);
+		assertArrayEquals(expected, getArrayFromSet(set));
+	}
+	
+	@Test
+	void removeNonJunctionLeft() {
+		Integer expected[] = {
+				1, 2, 3, 4, 10, 20, 25, 40, 60
+		};
+		set.remove(5);
+		assertArrayEquals(expected, getArrayFromSet(set));
+	}
+	
+	@Test
+	void removeIfTest() {
+		Integer randomNumbers[] = getRandomNumbers();
+		Set <Integer> setNumbers = new TreeSet<>();
+		fillSetFromArray(setNumbers, randomNumbers);
+		setNumbers.removeIf(n -> n % 2 == 0);
+		for(Integer num: setNumbers) {
+			assertFalse(num % 2 == 0);
+		}
 	}
 
-	private <T> void fillSetFromArray(Set<T> res, T[] array) {
-		
+	private <T> void fillSetFromArray(Set<T> res, T[] array) {	
 		for(T num: array) {
 			res.add(num);
 		}
-		
 	}
 	
 	private Integer[] getRandomNumbers() {
@@ -39,7 +92,6 @@ Set<Integer> set;
 			res[i] = (int) (Math.random() * Integer.MAX_VALUE);
 		}
 		return res;
-		
 	}
 
 	@Test
@@ -50,13 +102,14 @@ Set<Integer> set;
 		}
 		assertTrue(set.add(80));
 		assertFalse(set.add(80));
-		
 	}
+	
 	@Test
 	void containsTest() {
 		assertTrue(set.contains(60));
 		assertFalse(set.contains(80));
 	}
+	
 	@Test
 	void iteratorNoRemoveTest() {
 		Integer[] randomNumbers = getRandomNumbers();
@@ -65,6 +118,7 @@ Set<Integer> set;
 		Arrays.sort(randomNumbers);
 		assertArrayEquals(randomNumbers, getArrayFromSet(numbersSet));
 	}
+	
 	@Test
 	void treeSetInsensitiveOrderTest () {
 		 String strings[] = {"Boris", "Asaf", "android", "band"};
@@ -73,6 +127,7 @@ Set<Integer> set;
 		 fillSetFromArray(treeSet, strings);
 		 assertArrayEquals(expected, getArrayFromSet(treeSet));
 	}
+	
 	@SuppressWarnings("unchecked")
 	private <T> T[] getArrayFromSet(Set<T> set) {
 		T res[] = (T[]) new Object[set.size()];
@@ -82,6 +137,4 @@ Set<Integer> set;
 		}
 		return res;
 	}
-	
-
 }
