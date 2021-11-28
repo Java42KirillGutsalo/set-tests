@@ -3,6 +3,8 @@ package telran.util;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -152,6 +154,44 @@ Set<Integer> set;
 		assertFalse(set.contains(5));
 		for (Integer num: expected) {
 			assertTrue(set.contains(num));
+		}
+	}
+	
+	@Test
+	void testNextExeption() {
+		Iterator<Integer> it = set.iterator();
+		while(it.hasNext()) {
+			it.next();
+		}
+		try {
+			it.next();
+			fail("There should be thrown exception");
+		} catch (NoSuchElementException e) {
+			
+		} catch(Exception e) {
+			fail("There should be thrown NoSuchElementException");
+		}
+	}
+	
+	@Test
+	void testRemoveNoNext() {
+		Iterator<Integer> it = set.iterator();
+		it.next();
+		it.next();
+		it.remove();
+		exceptionRemoveTest(it);
+		it = set.iterator();
+		exceptionRemoveTest(it);
+	}
+
+	private void exceptionRemoveTest(Iterator<Integer> it) {
+		try {
+			it.remove();
+			fail("There should be thrown exception");
+		} catch (IllegalStateException e) {
+			
+		} catch (Exception e) {
+			fail("There should be thrown IllegalStateException");
 		}
 	}
 }
